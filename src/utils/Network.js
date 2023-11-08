@@ -16,6 +16,7 @@ class Network {
     this.io = socketIOClient(`${serverURL}`, {
       autoConnect: false,
     });
+    this.pingWorker = null;
   }
 
   connect(room, player, setter) {
@@ -35,7 +36,6 @@ class Network {
   listenToRoom() {
     this.io.on('joined', async data => {
       console.log('joined');
-
       const { room, players, maze, messages } = data;
       console.log(data);
       this.room = room;
@@ -46,6 +46,9 @@ class Network {
         ...data,
         player: players.find(item => item.name === this.localPlayerName),
       });
+      // this.pingWorker = setInterval(() => {
+      //   this.io.emit('ping', { room, playerName: this.localPlayerName });
+      // }, 2000);
       // let result = await fetch(
       //   `http://iced-gabby-apogee.glitch.me/chats?room=${room}`
       // ).then(response => response.json());
@@ -62,12 +65,12 @@ class Network {
       // setText(this.chatMessages);
     });
 
-    this.io.on('newMessage', ({ room, playerName, text }) => {
+    this.io.on('newMessage', ({ room, playerName, message }) => {
       if (room === this.room) {
-        this.messages.push({ name: playerName, message: text });
+        this.messages.push({ name: playerName, message });
         this.setter(state => ({
           ...state,
-          messages: [...state.messages, { name: playerName, message: text }],
+          messages: [...state.messages, { name: playerName, message }],
         }));
       }
     });
@@ -114,21 +117,22 @@ class Network {
     });
   }
 
-  message(text) {
+  sendMessage(text) {
     this.io.emit('sendMessage', {
       room: this.room,
       playerName: this.localPlayerName,
-      text,
+      message: text,
     });
   }
 
   disconnect() {
-    console.log('disconnecting...');
-    this.io.emit('disconnected', {
-      playerName: this.localPlayerName,
-      room: this.room,
-    });
-    this.io.disconnect();
+    console.log('disconnecting...', this);
+    // this.io.emit('disconnected', {
+    //   playerName: this.localPlayerName,
+    //   room: this.room,
+    // });
+    this.io.disconnect(this.localPlayerName);
+
     this.isConnected = false;
     this.localPlayerName = null;
     this.players = [];
@@ -136,6 +140,8 @@ class Network {
     this.room = null;
     this.messages = [];
     this.setter = null;
+    clearInterval(this.pingWorker);
+    this.pingWorker = null;
   }
 }
 

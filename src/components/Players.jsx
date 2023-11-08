@@ -46,24 +46,23 @@ const Players = ({matrix}) => {
       const keyDownEvent = (event) => {
         console.log(event.code)             
         if (event.code === "ArrowDown") {
-            if (pos[1]+1<matrix[0].length && matrix[pos[0]+1][pos[1]]===MAP.gap)
+            if (pos[0]+1<matrix[0].length && matrix[pos[0]+1][pos[1]]===MAP.gap)
             MOVE.DOWN()
         }
         if (event.code === "ArrowUp") {
-            if (pos[1]-1>=0 && matrix[pos[0]-1][pos[1]]===MAP.gap)
+            if (pos[0]-1>=0 && matrix[pos[0]-1][pos[1]]===MAP.gap)
             MOVE.UP()
-        console.log(matrix[pos[0]-1][pos[1]],MAP.exit)
-            if (pos[1]-1>=0 && matrix[pos[0]-1][pos[1]]===MAP.exit){
+            if (pos[0]-1>=0 && matrix[pos[0]-1][pos[1]]===MAP.exit){
                 network.playerWon()
                 MOVE.UP()
             }
         }
         if (event.code === "ArrowRight") {
-            if (pos[0]+1<matrix.length && matrix[pos[0]][pos[1]+1])
+            if (pos[1]+1<matrix.length && matrix[pos[0]][pos[1]+1])
             MOVE.RIGHT()
         }
         if (event.code === "ArrowLeft") {
-            if (pos[0]-1>=0 && matrix[pos[0]][pos[1]-1]===MAP.gap)
+            if (pos[1]-1>=0 && matrix[pos[0]][pos[1]-1]===MAP.gap)
             MOVE.LEFT()
         }
       };
