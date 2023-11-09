@@ -26,8 +26,6 @@ const Home = () => {
     .finally(()=>setLoading(false))
   }
 
-  console.log(players, players.includes("Harry"))
-
   const debounce = React.useCallback((keyword) => {
     if (id.current){
       clearTimeout(id.current)

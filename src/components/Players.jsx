@@ -15,7 +15,7 @@ const getDir = (dir) => {
     return lostGirl.UP
   }
 
-const Players = ({matrix}) => {
+const Players = ({matrix, cont}) => {
     const {gameState: {player: {pos, name, dir}, players}} = useGameContext()
     console.log({pos})
     const PlayerLocal = React.useCallback(() => {
@@ -69,7 +69,7 @@ const Players = ({matrix}) => {
       };
 
   return (
-    <Box position={"absolute"} top={0} onKeyDown={keyDownEvent} tabIndex={-1}>
+    <Box position={"absolute"} top={0} onKeyDown={keyDownEvent} tabIndex={-1} ref={cont}>
         {
             matrix.map((row, i)=><Flex key={i}>
             {row.map((col, j)=>{

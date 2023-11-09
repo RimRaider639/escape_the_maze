@@ -1,7 +1,7 @@
 import React from 'react'
 import Maze from '../utils/Game'
 import useGameContext from '../hooks/useGameContext'
-import { Box, Flex, Image } from '@chakra-ui/react'
+import { Box, Flex, Image, Text } from '@chakra-ui/react'
 import Players from './Players'
 import { MAP, SIDE } from '../constants/maze'
 
@@ -12,6 +12,7 @@ const Game = () => {
     const Wall = React.useCallback(() => <Image src="stones.png" w={SIDE} h={SIDE}/>, [])
     
     const Gap = React.useCallback(() => <Image src="middle.png" w={SIDE} h={SIDE}/>, [])
+
     
     React.useEffect(()=>{
         if (gameState.maze){
@@ -25,7 +26,10 @@ const Game = () => {
             alert(gameState.winner+" won the game.")
         }
     }, [gameState.winner])
+
   return (
+    <Flex direction={"column"} gap={"20px"}>
+    <Text>Click on the maze to play.</Text>
     <Box position={"relative"}>
         {maze && maze.matrix.map((row, i)=><Flex key={i}>
             {row.map((col, j)=>{
@@ -35,6 +39,7 @@ const Game = () => {
         </Flex>)}
         {maze && <Players matrix={maze.matrix}/>}
     </Box>
+    </Flex>
   )
 }
 
