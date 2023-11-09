@@ -15,12 +15,10 @@ const Room = () => {
     connect(room, player)
     window.addEventListener("beforeunload", ()=>{
       disconnect()
-      alert("disconnecting")
     })
-    return disconnect
   }, [room, player, connect, disconnect])
 
-  return <Flex padding={"30px"} justify={"space-between"} boxSizing={'border-box'} height={"100vh"}>
+  return <Flex padding={"30px"} justify={"space-between"} boxSizing={'border-box'} height={"100vh"} paddingY={"50px"}>
     <Game/>
     <ChatWindow/>
   </Flex>;

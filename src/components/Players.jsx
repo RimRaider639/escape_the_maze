@@ -4,6 +4,7 @@ import { lostGirl } from '../assets/avatars'
 import useGameContext from '../hooks/useGameContext'
 import network from '../utils/Network'
 import { MAP, SIDE } from '../constants/maze'
+import { CHARACTERS } from '../constants/characters'
 
 const getDir = (dir) => {
     if (dir) {const [x, y] = dir
@@ -24,8 +25,8 @@ const Players = ({matrix}) => {
       </Box>}, [dir])
   
       
-      const PlayerRemote = React.useCallback(({dir}) => <Box>
-      <Image  position={'absolute'} src={getDir(dir)} w={SIDE} h={SIDE} bgColor={"yellow"}/>
+      const PlayerRemote = React.useCallback(({dir, name}) => <Box>
+      <Image  position={'absolute'} src={getDir(dir)} w={SIDE} h={SIDE} bgColor={(CHARACTERS.find(item=>item.name===name)).color}/>
       <Image src="middle.png" w={SIDE} h={SIDE}/>
     </Box>, [])
 
@@ -75,7 +76,7 @@ const Players = ({matrix}) => {
                 if (pos[0]===i && pos[1]===j) return <PlayerLocal key={j}/>
                 for (let k=0; k<players.length; k++){
                     if (players[k].name!==name && players[k].pos[0]===i && players[k].pos[1]===j){
-                        return <PlayerRemote key={j} dir={players[k].dir}/>
+                        return <PlayerRemote key={j} dir={players[k].dir} name={players[k].name}/>
                     }
                 }
                 return <Box key={j} width={SIDE} height={SIDE}/>
